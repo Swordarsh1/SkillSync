@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<style>
+  /* POP Card for Featured Jobs */
+  .pop-card {
+    transition: 
+      box-shadow 0.37s cubic-bezier(.27,.95,.62,1), 
+      transform 0.32s cubic-bezier(.37,.83,.41,1.2);
+    box-shadow: 0 3px 18px 0 rgba(60,80,140,0.13), 0 1.5px 12px rgba(0,0,0,0.09);
+    will-change: transform, box-shadow;
+    border-radius: 2rem;
+    background: rgba(255,255,255,0.97);
+    overflow: hidden;
+    border: none;
+  }
+  .pop-card:hover {
+    box-shadow: 0 16px 54px 0 rgba(80,150,200,0.19), 0 3.5px 15px rgba(40,180,140,0.23);
+    transform: scale(1.07) rotate(-1deg);
+    z-index: 2;
+  }
+  .pop-card:active {
+    filter: brightness(0.99) blur(.3px);
+    transform: scale(0.98);
+  }
+
+  .pop-card .card-footer {
+    transition: background 0.22s;
+    background: rgba(255,255,255,0.88);
+    border-radius: 0 0 2rem 2rem;
+  }
+  .pop-card:hover .card-footer {
+    background: linear-gradient(90deg,#cafaff 0%, #fff 120%);
+  }
+
+  .btn-gradient, .btn-primary {
+    box-shadow: 0 2px 8px rgba(60,80,140,0.13);
+    transition: box-shadow .25s, transform .2s;
+    border-radius: 2em;
+    font-weight: 600;
+  }
+  .btn-gradient:hover, .btn-primary:hover {
+    box-shadow: 0 5px 16px rgba(60,80,140,0.23);
+    transform: scale(1.08);
+    outline: none !important;
+  }
+
+  .featured-job-icon {
+    background: linear-gradient(90deg,#e9f1ff 60%,#eafffa 100%);
+    border-radius: 50%;
+    box-shadow: 0 2px 9px rgba(50,50,120,0.13);
+    padding: 6px;
+    margin-right: 1em;
+  }
+
+  /* Extra smooth hover for trending jobs */
+  .job-listing:hover {
+    box-shadow: 0 8px 32px 0 rgba(60, 80, 140, 0.15), 0 2px 12px rgba(30,170,170,0.10);
+    transform: scale(1.025);
+    transition: box-shadow .23s, transform .20s;
+    background: rgba(255,255,255,0.96);
+  }
+</style>
+
+<section class="job-form-section job-form-section--image">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 mx-auto">
+        <div class="job-form-box p-5 shadow-lg rounded bg-white bg-opacity-90 animate__animated animate__fadeInDown">
+          <h1 class="display-4 text-center mb-3">
+            Find a <span class="accent">job</span> you will <span class="accent">love</span>.
+          </h1>
+          <p class="text-center text-muted mb-5">Search thousands of job listings from top companies.</p>
+          <form id="job-main-form" method="get" action="{% url 'jobs:searh' %}" class="job-main-form">
+            <div class="controls">
+              <div class="row g-3 align-items-center">
+                <div class="col-md-5">
+                  <div class="form-group">
+                    <label for="profession" class="fw-bold text-uppercase small mb-1" style="letter-spacing: 2px;">Position</label>
+                    <input type="text" id="profession" name="position" placeholder="e.g., Software Developer"
+                        class="form-control form-control-lg rounded-pill px-4"
+                        style="background: rgba(255,255,255,0.96); 
+                               border: 2px solid #e0e7ff; 
+                               box-shadow: 0 5px 32px rgba(55,105,140,0.13), 0 1.5px 10px rgba(44,44,120,0.09); 
+                               font-size: 1.08rem; 
+                               transition: box-shadow 0.25s, border-color 0.25s, transform 0.2s;" 
+                        onfocus="this.style.boxShadow='0 9px 42px rgba(55,140,255,0.18), 0 2px 18px rgba(50,220,190,0.09)'; this.style.borderColor='#41d8ea'; this.style.transform='translateY(-1px) scale(1.01)';" 
+                        onblur="this.style.boxShadow='0 5px 32px rgba(55,105,140,0.13), 0 1.5px 10px rgba(44,44,120,0.09)'; this.style.borderColor='#e0e7ff'; this.style.transform='translateY(0) scale(1)';" />
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <div class="form-group">
+                    <label for="location" class="fw-bold text-uppercase small mb-1" style="letter-spacing: 2px;">Location</label>
+                    <input type="text" id="location" name="location" placeholder="e.g., New York"
+                        class="form-control form-control-lg rounded-pill px-4"
+                        style="background: rgba(255,255,255,0.96); 
+                               border: 2px solid #e0e7ff; 
+                               box-shadow: 0 5px 32px rgba(55,105,140,0.13), 0 1.5px 10px rgba(44,44,120,0.09); 
+                               font-size: 1.08rem; 
+                               transition: box-shadow 0.25s, border-color 0.25s, transform 0.2s;" 
+                        onfocus="this.style.boxShadow='0 9px 42px rgba(55,140,255,0.18), 0 2px 18px rgba(50,220,190,0.09)'; this.style.borderColor='#41d8ea'; this.style.transform='translateY(-1px) scale(1.01)';" 
+                        onblur="this.style.boxShadow='0 5px 32px rgba(55,105,140,0.13), 0 1.5px 10px rgba(44,44,120,0.09)'; this.style.borderColor='#e0e7ff'; this.style.transform='translateY(0) scale(1)';" />
+                  </div>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center align-items-end">
+                  <button type="submit"
+                  class="btn btn-gradient d-flex align-items-center justify-content-center shadow"
+                  style="padding:6px 22px 6px 16px; font-size:1.01rem; border-radius:2em; height:44px; min-width:130px; max-width:160px;">
+                  <img src="{% static 'img/search-icon.png' %}" alt="Search" style="height:18px;vertical-align:middle;margin-right:8px;">
+                  <span style="font-weight:700;letter-spacing:1px;font-size:1em;white-space:nowrap;">SEARCH</span>
+                </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="bg-light py-5">
+  <div class="container">
+    <h2 class="text-center mb-5 animate__animated animate__fadeInUp">Featured Jobs</h2>
+    <div class="row">
+      {% for job in jobs %}
+      <div class="col-lg-4 mb-4 animate__animated animate__fadeInUp">
+        <div class="pop-card card h-100 shadow-sm border-0 rounded-4">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <span class="featured-job-icon">
+                <img src="{% static 'img/company-1.png' %}" alt="Company Logo" class="rounded-circle" style="width:38px; height:38px;" />
+              </span>
+              <div>
+                <h5 class="card-title mb-0">
+                  <a href="{% url 'jobs:jobs-detail' job.id %}" class="text-dark fw-bold">{{ job.title }}</a>
+                </h5>
+                <p class="card-text text-muted">{{ job.company_name }}</p>
+              </div>
+            </div>
+            <p class="card-text"><i class="fa fa-map-marker-alt text-primary me-1"></i> {{ job.location }}</p>
+            <p class="card-text text-muted">{{ job.description|truncatewords:20 }}</p>
+          </div>
+          <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
+            <div>
+              {% if job.type == '1' %}
+              <span class="badge bg-success rounded-pill px-3 py-2 fw-semibold">Full time</span>
+              {% elif job.type == '2' %}
+              <span class="badge bg-primary rounded-pill px-3 py-2 fw-semibold">Part time</span>
+              {% else %}
+              <span class="badge bg-warning text-dark rounded-pill px-3 py-2 fw-semibold">Internship</span>
+              {% endif %}
+            </div>
+            <a href="{% url 'jobs:jobs-detail' job.id %}" class="btn btn-sm btn-gradient fw-semibold"
+               style="min-width:110px;box-shadow:0 0 0 0;"
+               >View Details</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-5 animate__animated animate__fadeInUp">Trending This Month</h2>
+    {% for trending in trendings %}
+    <div class="card job-listing mb-3 shadow-sm rounded-4 animate__animated animate__fadeInUp">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-lg-5 d-flex align-items-center">
+            <img src="{% static 'img/company-1.png' %}" alt="{{ trending.company_name }} logo" class="img-fluid rounded-circle me-3" style="max-width: 40px" />
+            <div>
+              <h5 class="job__title mb-0"><a href="{% url 'jobs:jobs-detail' trending.id %}">{{ trending.title }}</a></h5>
+              <p class="job__company text-muted mb-0">{{ trending.company_name }}</p>
+            </div>
+          </div>
+          <div class="col-lg-3 text-muted">
+            <i class="fa fa-map-marker-alt me-1"></i> {{ trending.location }}
+          </div>
+          <div class="col-lg-2 text-muted">
+            <i class="fa fa-clock me-1"></i> {{ trending.created_at|naturaltime }}
+          </div>
+          <div class="col-lg-2 text-end">
+            <a href="#" data-toggle="tooltip" data-placement="top" title="Save to favourites" class="btn btn-outline-secondary btn-sm"
+               style="transition: box-shadow 0.3s ease, transform 0.3s ease;"
+               onmouseover="this.style.boxShadow='0 0 8px 2px #666'; this.style.transform='scale(1.05)';"
+               onmouseout="this.style.boxShadow='none'; this.style.transform='scale(1)';">
+              <i class="fa fa-star"></i>
+            </a>
+            <a href="{% url 'jobs:jobs-detail' trending.id %}" class="btn btn-primary btn-sm ms-2 fw-semibold"
+               style="transition: box-shadow 0.3s ease, transform 0.3s ease;"
+               onmouseover="this.style.boxShadow='0 0 12px 2px #333'; this.style.transform='scale(1.05)';"
+               onmouseout="this.style.boxShadow='none'; this.style.transform='scale(1)';">
+               Apply
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+
+<section style="background-image: url({% static 'img/startup.jpg' %});" class="section-divider">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h2 class="text-light animate__animated animate__fadeIn">Start Searching For Your New Job Now!</h2>
+        <p class="lead text-light mb-4 animate__animated animate__fadeIn">We have thousands of exciting opportunities waiting for you.</p>
+        <a href="{% url 'jobs:jobs' %}" class="btn btn-outline-light btn-lg fw-semibold animate__animated animate__pulse animate__infinite animate__slow">See All Job Offers</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

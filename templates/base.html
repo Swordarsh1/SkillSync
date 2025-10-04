@@ -1,0 +1,385 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>{% block title %} {% endblock %} - SkillSync</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="all,follow" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap" rel="stylesheet" />
+  <!-- Vendor & Custom CSS -->
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/owl.carousel/assets/owl.carousel.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/owl.carousel/assets/owl.theme.default.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/style.default.css' %}" id="theme-stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/custom.css' %}" />
+  <link rel="shortcut icon" href="favicon.png" />
+
+  {% block styles %}{% endblock %}
+  <style>
+    /* Frosted Glass Card */
+    .frosted-card {
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 10px 32px rgba(44,44,120,0.08), 0 1.5px 8px rgba(80,80,140,0.09);
+      border-radius: 22px;
+      padding: 36px 32px 32px;
+      backdrop-filter: blur(8px);
+      transition: box-shadow .3s cubic-bezier(.4,0,.2,1);
+    }
+    .frosted-card:hover {
+      box-shadow: 0 10px 44px rgba(30,30,80,0.17), 0 2px 12px rgba(100,100,120,0.12);
+      transform: translateY(-2px) scale(1.012);
+    }
+
+    /* Header */
+    header.header {
+      background: linear-gradient(90deg, #4f5ef6 0%, #7c51c9 100%);
+      box-shadow: 0 8px 48px rgba(70,70,120,0.18);
+      position: sticky;
+      top: 0;
+      z-index: 1050;
+      min-height: 74px;
+    }
+    .navbar {
+      padding-top: 14px; padding-bottom: 14px;
+    }
+    .navbar-brand img {
+      height: 80px;
+      max-width: 220px;
+      filter: drop-shadow(0 2px 12px rgba(50,50,110,0.09));
+      transition: transform 0.26s;
+    }
+    .navbar-brand img:hover {
+      transform: scale(1.13) rotate(-2deg);
+      filter: drop-shadow(0 4px 14px rgba(0,0,30,0.13));
+    }
+    .navbar-nav .nav-link {
+      font-weight: 700;
+      letter-spacing: 1.08px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.07em;
+      color: #eaeaea;
+      margin-right: 18px;
+      transition: color .22s, text-shadow .22s;
+      position: relative;
+    }
+    .navbar-nav .nav-link:after {
+      content: '';
+      display: block;
+      margin: 0 auto;
+      height: 2.5px;
+      width: 0;
+      background: linear-gradient(90deg,#7052e9 0,#70e9f4 100%);
+      transition: width .32s cubic-bezier(.4,0,.2,1);
+    }
+    .navbar-nav .nav-link:hover:after, .navbar-nav .nav-link.active:after {
+      width: 60%;
+    }
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link.active {
+      color: #70e9f4;
+      text-shadow: 0 0 5px #6adbea88;
+    }
+
+    /* Creative Buttons: Neon/Frost */
+    .btn-gradient, .navbar-btn, .btn-glassy {
+      background: linear-gradient(90deg, #725eea 15%, #36dab7 100%);
+      color: #fff!important;
+      font-weight: 700;
+      font-size: 1.04em;
+      border-radius: 40px;
+      border: none;
+      box-shadow: 0 2px 32px rgba(80, 208, 214, 0.23), 0 1px 7px rgba(34,34,120,.09);
+      transition: box-shadow .31s, transform .19s;
+      position: relative;
+      padding: 9px 32px;
+    }
+    .btn-gradient:hover, .btn-glassy:hover, .navbar-btn:hover {
+      background: linear-gradient(90deg, #41cfff 30%, #8f80ec 90%);
+      color: #333!important;
+      box-shadow: 0 7px 32px 0 rgba(40,180,170,0.16);
+      transform: scale(1.077) translateY(-2px);
+    }
+
+    /* Glassy Inputs */
+    .glassy-input {
+      background:rgba(255,255,255,0.85);
+      border-radius:18px;
+      box-shadow:0 1px 11px rgba(44,52,120,0.09);
+      border:1.25px solid #edecef;
+      padding:13px 20px;
+      font-size:1.07em;
+      font-family:'Roboto',sans-serif;
+      font-weight:400;
+      transition:border .22s;
+    }
+    .glassy-input:focus {
+      border-color:#4f7ff9;
+      box-shadow:0 2px 22px rgba(70,120,255,0.12);
+    }
+
+    /* Footer - New Depth */
+    footer.footer {
+      background: linear-gradient(180deg, #3a2e59 0%, #22243b 100%);
+      color: #ededed;
+      font-family: 'Montserrat', sans-serif;
+      box-shadow: 0 -8px 50px rgba(51,51,120,0.19);
+      padding: 66px 18px 38px;
+      margin-top:42px;
+      border-radius:38px 38px 0 0/40px 40px 0 0;
+    }
+    footer.footer h4 {
+      color:#8ae8d6;font-weight:800;text-transform:uppercase;letter-spacing:.11em;
+      margin-bottom: 22px;
+      text-shadow:0 2px 8px rgba(50,230,220,.09);
+    }
+    footer.footer ul {
+      margin-bottom:6px;
+    }
+    .footer__block {
+      background: rgba(24,26,48,0.86);
+      border-radius:40px;
+      box-shadow: 0 9px 24px rgba(44,255,255,.05);
+      overflow: hidden;
+      padding: 26px 0 16px 0;
+    }
+    .profile-link img:hover { box-shadow:0 0 10px #70e9f4cc,0 2px 12px #41d8eaa6;transform:scale(1.11);}
+    .profile-link:hover {text-decoration:none;}
+    .footer__copyright {
+      margin-top:28px;
+    }
+    .footer__copyright p {
+      font-size: 1.02em; color: #fff; font-weight: 500; letter-spacing:.6px;
+      text-shadow: 0 1.5px 8px rgba(80,255,225,.09);
+      padding-top: 3px;
+      padding-bottom: 0;
+    }
+
+    /* Alerts */
+    .alert {
+      max-width: 650px;
+      margin: 15px auto;
+      font-weight: 600;
+      border-radius: 14px;
+      font-size: 1.09em;
+      box-shadow: 0 4px 28px rgba(150, 110, 254, .13);
+      border: none;
+    }
+    .alert:hover {
+      box-shadow: 0 9px 33px rgba(31,131,255,0.15), 0 2px 18px rgba(0,0,97,0.13);
+      background:#f7fafc;
+    }
+
+    /* Section animated-card demo */
+    .animated-card {
+      animation: popAnim .85s cubic-bezier(.19,1,.22,1) 0s 1;
+      box-shadow:0 12px 44px rgba(24,32,90,0.15),0 1.5px 8px rgba(80,120,220,0.09);
+    }
+    @keyframes popAnim {
+      0% { transform:scale(0.97) translateY(24px); opacity:0;}
+      55% { transform:scale(1.06) translateY(-7px); opacity:0.88;}
+      80% { transform:scale(0.98) translateY(2px); opacity:1;}
+      100% { transform:scale(1) translateY(0); opacity:1;}
+    }
+    @media (max-width:991px) {
+      .navbar-brand img { height:62px; max-width:140px;}
+      footer.footer {padding:40px 9px 20px;font-size:0.99em;}
+      .footer__block{padding:14px 0 9px 0;}
+    }
+  </style>
+</head>
+
+<body style="background:linear-gradient(160deg,#f2f8ff 0,#e9edfb 70%,#d6d3ed 100%);">
+
+  <!-- Modern Header -->
+  <header class="header animated-card">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a href="/" class="navbar-brand d-flex align-items-center py-2">
+          <img src="{% static 'img/logo-small.png' %}" alt="logo" />
+          <span class="sr-only">Home</span>
+        </a>
+        <button type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler navbar-toggler-right btn-glassy" style="font-weight:600;">
+          <span class="fa fa-bars"></span>
+        </button>
+        <div id="navbarSupportedContent" class="collapse navbar-collapse justify-content-end">
+          <ul class="navbar-nav ms-auto d-flex align-items-center">
+            <li class="nav-item active">
+              <a href="/" class="nav-link">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
+            {% if request.user.is_authenticated %}
+            <li class="nav-item dropdown">
+              <a id="clientZone" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                 class="nav-link dropdown-toggle has-img">
+                <div class="client-menu-image">
+                  <div class="inner">
+                    <img src="{% static 'img/company-1.png' %}" alt="company image" class="img-fluid" />
+                  </div>
+                </div>
+                {{ request.user.first_name }}
+              </a>
+              <div aria-labelledby="clientZone" class="dropdown-menu">
+                {% if request.user.role == 'employer' %}
+                <a href="{% url 'jobs:employer-dashboard' %}" class="dropdown-item">Dashboard</a>
+                <a href="{% url 'jobs:employer-all-applicants' %}" class="dropdown-item">Applicants</a>
+                <a href="{% url 'jobs:employer-jobs-create' %}" class="dropdown-item">Post a New Job</a>
+                {% else %}
+                <a href="{% url 'accounts:employer-profile-update' %}" class="dropdown-item">Edit Profile</a>
+                {% endif %}
+                <a href="{% url 'accounts:logout' %}" class="dropdown-item">Logout</a>
+              </div>
+            </li>
+            {% else %}
+            <li class="nav-item dropdown">
+              <a id="pages" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">
+                <img src="{% static 'img/register.svg' %}" alt="Register" style="height:17px;vertical-align:middle;margin-right:5px;">
+                <span style="font-weight:700;">Register</span>
+              </a>
+              <div aria-labelledby="pages" class="dropdown-menu animated-card">
+                <a href="{% url 'accounts:employee-register' %}" class="dropdown-item">As Job Seeker</a>
+                <a href="{% url 'accounts:employer-register' %}" class="dropdown-item">As Employer</a>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'accounts:login' %}" class="btn btn-gradient navbar-btn">
+                <img src="{% static 'img/login.png' %}" alt="Login" style="height:22px;vertical-align:middle;margin-right:8px;">
+                Login
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  
+
+  <!-- Frosted Message Area -->
+  <div class="container mt-4">
+    {% if messages %}
+      <div class="frosted-card animated-card">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Content Block With Animated Frosted Card -->
+  <div class="container mt-5 mb-0">
+    <div class="frosted-card animated-card">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
+
+  <!-- Footer: see previous message for layout, use this container for depth -->
+  <footer class="footer">
+    <div class="footer__block">
+      <div class="container">
+        <div class="row">
+          <!-- Meet the Team Section -->
+          <div class="col-lg-4 col-md-6 mb-5">
+            <h4 class="h5" style="color:#70e9f4;">Meet the Team</h4>
+            <p>
+              SkillSync is a portfolio project crafted by students at PSIT Kanpur.<br>
+              <b>Team Members:</b>
+              <ul style="list-style:none; padding:0;">
+                <li>
+                  <b>Adarsh Verma</b>
+                  <a href="https://github.com/Swordarsh1" target="_blank" class="profile-link">
+                    <img src="{% static 'img/github2.png' %}" height="20" title="GitHub" style="margin-left:6px;margin-right:4px;">
+                  </a>
+                  <a href="https://linkedin.com/in/adarsh-verma-657596279" target="_blank" class="profile-link">
+                    <img src="{% static 'img/linkedin.png' %}" height="20" title="LinkedIn">
+                  </a>
+                </li>
+                <li>
+                  <b>Chitvan Singh</b>
+                  <a href="https://github.com/chitvan11" target="_blank" class="profile-link">
+                    <img src="{% static 'img/github2.png' %}" height="20" title="GitHub" style="margin-left:6px;">
+                  </a>
+                </li>
+                <li>
+                  <b>Daksh Mehrotra</b>
+                  <a href="https://github.com/dakshhh20" target="_blank" class="profile-link">
+                    <img src="{% static 'img/github2.png' %}" height="20" title="GitHub" style="margin-left:6px;">
+                  </a>
+                </li>
+                <li>
+                  <b>Abhinav Jaiswal</b>
+                  <a href="https://github.com/abhinavjayaswal0308" target="_blank" class="profile-link">
+                    <img src="{% static 'img/github2.png' %}" height="20" title="GitHub" style="margin-left:6px;">
+                  </a>
+                </li>
+              </ul>
+              <span style="font-size:0.95em; color:#ffd;">Contact: adarshve23@gmail.com</span>
+            </p>
+          </div>
+  
+          <!-- Quick Links Section -->
+          <div class="col-lg-2 col-md-6 mb-5">
+            <h4 class="h5" style="color:#70e9f4;">Quick Links</h4>
+            <ul class="list-unstyled">
+              <li><a href="#">About Project</a></li>
+              <li><a href="#">All Jobs</a></li>
+              <li><a href="#">Docs</a></li>
+              <li><a href="https://github.com/Swordarsh1/SkillSync" target="_blank">Source Code</a></li>
+            </ul>
+          </div>
+          <!-- Candidate Section -->
+          <div class="col-lg-2 col-md-6 mb-5">
+            <h4 class="h5" style="color:#70e9f4;">For Candidates</h4>
+            <ul class="list-unstyled">
+              <li><a href="{% url 'accounts:employee-register' %}">Create Account</a></li>
+              <li><a href="#">Search Jobs</a></li>
+              <li><a href="#">FAQ</a></li>
+            </ul>
+          </div>
+          <!-- Social & Contact Section -->
+          <div class="col-lg-4 col-md-6 mb-5">
+            <h4 class="h5" style="color:#70e9f4;">Connect & Collaborate</h4>
+            <p>Follow our work & chat with us:</p>
+            <div style="display:flex;align-items:center;">
+              <a href="https://github.com/Swordarsh1/SkillSync" class="btn btn-outline-light social" target="_blank" style="border-radius:50%;background:rgba(40,40,90,0.08);margin-right:12px;">
+                <img src="{% static 'img/github2.png' %}" alt="GitHub" style="height:32px;vertical-align:middle;">
+              </a>
+              <a href="https://linkedin.com/in/adarsh-verma-657596279" class="btn btn-outline-light social" target="_blank" style="border-radius:50%;background:rgba(40,40,90,0.08);">
+                <img src="{% static 'img/linkedin.png' %}" alt="LinkedIn" style="height:32px;vertical-align:middle;">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer__copyright">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6 text-md-left text-center">
+              <p>&copy;2025 SkillSync Project</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  
+  
+
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/popper.js/umd/popper.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'vendor/jquery.cookie/jquery.cookie.js' %}"></script>
+  <script src="{% static 'vendor/owl.carousel/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'js/front.js' %}"></script>
+  {% block javascripts %}{% endblock %}
+</body>
+</html>
