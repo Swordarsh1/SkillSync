@@ -54,21 +54,20 @@ class JobCreateView(CreateView):
     @method_decorator(login_required(login_url=reverse_lazy('accounts:login')))
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_authenticated:
-            return reverse_lazy('accounts:login')
+            # FIXED: Added HttpResponseRedirect so Django doesn't crash on a plain string
+            return HttpResponseRedirect(reverse_lazy('accounts:login'))
         if self.request.user.is_authenticated and self.request.user.role != 'employer':
-            return reverse_lazy('accounts:login')
+            # FIXED: Added HttpResponseRedirect here as well
+            return HttpResponseRedirect(reverse_lazy('accounts:login'))
         return super().dispatch(self.request, *args, **kwargs)
 
     def form_valid(self, form):
+        # This safely attaches the logged-in user to the job before saving
         form.instance.user = self.request.user
         return super(JobCreateView, self).form_valid(form)
 
-    def post(self, request, *args, **kwargs):
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
+    # FIXED: The faulty post() method was entirely deleted. Django's CreateView 
+    # handles the post request natively and safely creates the 'object' attribute.
 
 
 class ApplicantsListView(ListView):
@@ -77,7 +76,6 @@ class ApplicantsListView(ListView):
     context_object_name = 'applicants'
 
     def get_queryset(self):
-        # jobs = Job.objects.filter(user_id=self.request.user.id)
         return self.model.objects.filter(job__user_id=self.request.user.id)
 
 
