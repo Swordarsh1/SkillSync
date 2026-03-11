@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
-from accounts.models import User
+from accounts.models import User 
 
 JOB_TYPE = (
     ('1', "Full time"),
@@ -23,6 +23,7 @@ class Job(models.Model):
     website = models.CharField(max_length=100, default="")
     created_at = models.DateTimeField(default=timezone.now)
     filled = models.BooleanField(default=False)
+    salary = models.CharField(max_length=100, default="", blank=True) 
 
     def __str__(self):
         return self.title
@@ -35,3 +36,22 @@ class Applicant(models.Model):
 
     def __str__(self):
         return self.user.get_full_name()
+    
+
+
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    
+
+    bio = models.TextField(blank=True, null=True)
+
+    education = models.CharField(max_length=200, blank=True, null=True)
+    skills = models.CharField(max_length=300, blank=True, null=True)
+
+    company_name = models.CharField(max_length=150, blank=True, null=True)
+    company_website = models.URLField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Profile of {self.user.email}"

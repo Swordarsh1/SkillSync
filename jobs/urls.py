@@ -6,3 +6,4 @@ urlpatterns = [
     path('', include('jobsapp.urls')),
     path('', include('accounts.urls')),
 ]
+
