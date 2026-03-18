@@ -463,7 +463,7 @@ function Login() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    fetch('http://127.0.0.1:8000/api/auth/login/', {
+    fetch('/api/auth/login/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: email.toLowerCase(), password: password })
@@ -510,7 +510,7 @@ function Register() {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    fetch('http://127.0.0.1:8000/api/auth/register/', {
+    fetch('/api/auth/register/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 

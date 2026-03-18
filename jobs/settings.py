@@ -95,33 +95,20 @@ ROOT_URLCONF = 'jobs.urls'
 
 
 TEMPLATES = [
-
-{
-
-'BACKEND': 'django.template.backends.django.DjangoTemplates',
-
-'DIRS': [os.path.join(BASE_DIR, "templates")],
-
-'APP_DIRS': True,
-
-'OPTIONS': {
-
-'context_processors': [
-
-'django.template.context_processors.debug',
-
-'django.template.context_processors.request',
-
-'django.contrib.auth.context_processors.auth',
-
-'django.contrib.messages.context_processors.messages',
-
-],
-
-},
-
-},
-
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+       
+        'DIRS': [os.path.join(BASE_DIR, 'frontend', 'dist')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
 ]
 
 
@@ -196,10 +183,10 @@ ALLOWED_HOSTS = ['django-portal.herokuapp.com', 'localhost', '*']
 
 STATIC_URL = '/static/'
 
+# --- CHANGED: Added the React dist folder to static files ---
 STATICFILES_DIRS = [
-
-os.path.join(BASE_DIR, "static"),
-
+    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "frontend", "dist"), 
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -230,23 +217,15 @@ CORS_ALLOWED_ORIGINS = [
 
 # Set up REST Framework to include Token Authentication
 
+# Set up REST Framework to include Token Authentication
 REST_FRAMEWORK = {
-
-'DEFAULT_AUTHENTICATION_CLASSES': [
-
-'rest_framework.authentication.TokenAuthentication', #  Added for React access
-
-'rest_framework.authentication.SessionAuthentication',
-
-'rest_framework.authentication.BasicAuthentication',
-
-],
-
-'DEFAULT_PERMISSION_CLASSES': [
-
-'rest_framework.permissions.AllowAny',
-
-]
-
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication', # Added for React access
+        # 'rest_framework.authentication.SessionAuthentication', <-- COMMENTED THIS OUT!
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ]
 }
 
