@@ -410,7 +410,7 @@ function JobDetail() {
   const userRole = localStorage.getItem('user_role');
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/jobs/${id}/`)
+    fetch(`/api/jobs/${id}/`)
       .then(res => res.json())
       .then(data => setJob(data));
   }, [id]);
@@ -419,7 +419,7 @@ function JobDetail() {
     if (!token) return alert("Please login to apply!");
     if (userRole !== 'employee') return alert("Only Job Seekers can apply!");
 
-    fetch(`http://127.0.0.1:8000/api/jobs/${id}/apply/`, {
+    fetch(`/api/jobs/${id}/apply/`, {
       method: 'POST',
       headers: { 'Authorization': `Token ${token}`, 'Content-Type': 'application/json' }
     })
@@ -584,13 +584,13 @@ function EmployerDashboard() {
   const token = localStorage.getItem('token');
 
   const load = () => {
-    fetch('http://127.0.0.1:8000/api/employer/applicants/', { 
+    fetch('/api/employer/applicants/', { 
       headers: { 'Authorization': `Token ${token}` } 
     })
     .then(res => res.json())
     .then(data => setApplicants(data));
 
-    fetch('http://127.0.0.1:8000/api/employer/my-jobs/', { 
+    fetch('/api/employer/my-jobs/', { 
       headers: { 'Authorization': `Token ${token}` } 
     })
     .then(res => res.json())
@@ -601,7 +601,7 @@ function EmployerDashboard() {
 
   const handleDelete = (id) => {
     if (window.confirm("Delete job?")) {
-      fetch(`http://127.0.0.1:8000/api/jobs/${id}/delete/`, { 
+      fetch(`/api/jobs/${id}/delete/`, { 
         method: 'DELETE', 
         headers: { 'Authorization': `Token ${token}` } 
       }).then(() => load());
@@ -617,7 +617,7 @@ function EmployerDashboard() {
       last_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
     };
 
-    fetch('http://127.0.0.1:8000/api/jobs/create/', {
+    fetch('/api/jobs/create/', {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json', 
@@ -723,7 +723,7 @@ function MyApplications() {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/my-applications/', { headers: { 'Authorization': `Token ${token}` } })
+    fetch('/api/my-applications/', { headers: { 'Authorization': `Token ${token}` } })
       .then(res => res.json()).then(data => setApps(data));
   }, []);
 
